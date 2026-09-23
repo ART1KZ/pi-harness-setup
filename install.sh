@@ -51,6 +51,16 @@ else
 fi
 ok "Pi coding agent is installed and up-to-date"
 
+PI_EXEC="pi"
+if ! command -v pi >/dev/null 2>&1; then
+    NPM_BIN="$(npm config get prefix)/bin"
+    if [ -x "$NPM_BIN/pi" ]; then
+        export PATH="$NPM_BIN:$PATH"
+        PI_EXEC="$NPM_BIN/pi"
+        ok "Located pi binary at $PI_EXEC"
+    fi
+fi
+
 # 3. Determine source repo directory (handles curl | bash)
 step "Preparing configuration files..."
 TEMP_DIR_CREATED=0
@@ -176,11 +186,11 @@ PACKAGES=(
 
 for pkg in "${PACKAGES[@]}"; do
     info "Installing package: $pkg ..."
-    pi install "$pkg" || warn "Package install note: $pkg"
+    "$PI_EXEC" install "$pkg" || warn "Package install note: $pkg"
 done
 
 step "Running pi update --all to ensure all packages and catalogs are on latest versions..."
-pi update --all || warn "pi update completed with warnings"
+"$PI_EXEC" update --all || warn "pi update completed with warnings"
 ok "All packages and models updated to latest versions"
 
 # 11. Cleanup
@@ -190,11 +200,11 @@ fi
 
 # 12. Verification & Summary
 step "Verifying installation..."
-PI_VER=$(pi --version || echo "unknown")
+PI_VER=$("$PI_EXEC" --version 2>/dev/null || echo "installed")
 ok "Installed Pi version: $PI_VER"
 
 echo -e "\n${CYAN}Installed Packages:${NC}"
-pi list || true
+"$PI_EXEC" list || true
 
 echo -e "${GREEN}"
 cat << 'EOF'

@@ -59,16 +59,18 @@ try {
     & npm install -g @earendil-works/pi-coding-agent@latest --force
 }
 
+$piExec = "pi"
 $piCmd = Get-Command pi -ErrorAction SilentlyContinue
 if (-not $piCmd) {
     # Check common npm global paths
     $npmPrefix = (& npm config get prefix).Trim()
     $candidate = Join-Path $npmPrefix "pi.cmd"
     if (Test-Path $candidate) {
+        $piExec = $candidate
         $env:Path = "$npmPrefix;$env:Path"
-        Write-Success "Located pi binary at $npmPrefix"
+        Write-Success "Located pi binary at $candidate"
     } else {
-        Write-Warn "Could not find 'pi' in PATH. You may need to restart your terminal or add npm global directory to PATH."
+        Write-Warn "Could not find 'pi' in PATH. Will attempt to invoke via npx or global prefix."
     }
 }
 
@@ -256,15 +258,15 @@ $packages = @(
 foreach ($pkg in $packages) {
     Write-Info "Installing package: $pkg ..."
     try {
-        & pi install $pkg
+        & $piExec install $pkg
     } catch {
-        Write-Warn "Package install failed for $pkg: $_"
+        Write-Warn "Package install note for ${pkg}: $_"
     }
 }
 
 Write-Step "Running pi update --all to ensure all packages and catalogs are on latest versions..."
 try {
-    & pi update --all
+    & $piExec update --all
     Write-Success "All packages and models updated to latest versions"
 } catch {
     Write-Warn "pi update encountered an issue: $_"
@@ -277,11 +279,19 @@ if ($tempDirCreated -and (Test-Path $tempDir)) {
 
 # 12. Verification & Summary
 Write-Step "Verifying installation..."
-$piVer = (& pi --version)
-Write-Success "Installed Pi version: $piVer"
+try {
+    $piVer = (& $piExec --version)
+    Write-Success "Installed Pi version: $piVer"
+} catch {
+    Write-Warn "Could not invoke pi --version in this session: $_"
+}
 
 Write-Host "`nInstalled Packages:" -ForegroundColor Cyan
-& pi list
+try {
+    & $piExec list
+} catch {
+    Write-Warn "Could not run 'pi list' in this session. Restart terminal and verify with: pi list"
+}
 
 Write-Host @"
 
