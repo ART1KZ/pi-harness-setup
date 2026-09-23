@@ -1,0 +1,14 @@
+{
+  "provider": "openai",
+  "tools": {
+    "webSearch": { "enabled": true },
+    "sourceCheck": { "enabled": false },
+    "fetchContent": { "enabled": true },
+    "getSearchContent": { "enabled": true }
+  },
+  "workflow": "none",
+  "fetch": {
+    "answerProvider": "openai-codex",
+    "answerModel": "gpt-5.6-luna"
+  }
+}

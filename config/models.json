@@ -1,0 +1,19 @@
+{
+  "providers": {
+    "opencode-go": {
+      "models": [
+        {
+          "id": "union-alpha",
+          "name": "Union Alpha",
+          "api": "anthropic-messages",
+          "baseUrl": "https://opencode.ai/zen/go",
+          "reasoning": true,
+          "input": ["text", "image"],
+          "contextWindow": 262144,
+          "maxTokens": 131072,
+          "cost": { "input": 0, "output": 0, "cacheRead": 0, "cacheWrite": 0 }
+        }
+      ]
+    }
+  }
+}

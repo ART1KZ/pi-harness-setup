@@ -1,0 +1,21 @@
+{
+  "theme": "dark",
+  "defaultProvider": "opencode-go",
+  "defaultModel": "deepseek-v4.1-flash",
+  "packages": [
+    "https://github.com/ART1KZ/omp-antigravity-pro",
+    "npm:pi-perplexity",
+    "npm:pi-web-access",
+    "npm:@narumitw/pi-usage",
+    "npm:pi-mcp-adapter",
+    "npm:pi-rtk-optimizer",
+    "npm:pi-subagents",
+    "npm:pi-background-tasks"
+  ],
+  "enableInstallTelemetry": false,
+  "defaultProjectTrust": "always",
+  "defaultThinkingLevel": "max",
+  "skills": [
+    "!**/using-superpowers/**"
+  ]
+}

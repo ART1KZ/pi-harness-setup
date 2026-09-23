@@ -1,0 +1,35 @@
+# Credentials and Secrets
+auth.json
+**/auth.json
+secrets/entries/*
+!secrets/entries/.gitkeep
+*.dpapi
+*.key
+*.pem
+*.p12
+*.pfx
+.env
+.env.*
+!.env.example
+
+# Runtime and Cache
+sessions/
+**/sessions/
+cache/
+**/cache/
+web-search-cache/
+**/web-search-cache/
+mcp-cache.json
+pi-usage.json
+
+# Dependencies and Logs
+node_modules/
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+*.log
+
+# OS artifacts
+.DS_Store
+Thumbs.db
+desktop.ini
